@@ -2,6 +2,7 @@ const {google} = require('googleapis');
 const authorization = require('./authorization');
 const messages = require('./messages');
 
+// Start
 authorization.loadCredentials(listMessages);
 
 /**
