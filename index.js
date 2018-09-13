@@ -1,9 +1,10 @@
 const {google} = require('googleapis');
-const authorization = require('./authorization');
-const messages = require('./messages');
+const authorizationService = require('./authorization');
+const messagesService = require('./messages');
+const decoder = require('./linxoDecodeV1');
 
 // Start
-authorization.loadCredentials(listMessages);
+authorizationService.loadCredentials(listMessages);
 
 /**
  * Retrieve Messages in user's mailbox matching query.
@@ -14,5 +15,10 @@ function listMessages(auth) {
   const gmail = google.gmail({version: 'v1', auth});
   const query = 'from:(assistance@linxo.com) subject:notification';
 
-  messages.getPageOfMessages(gmail, query, []);
+  callbackDecode = (messages) => {
+    decoder.decode(messages[3]);
+  }
+
+  messagesService.getMessages(gmail, query, callbackDecode);
+
 };
