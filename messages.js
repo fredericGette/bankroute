@@ -56,7 +56,7 @@ getMessage1By1 = (gmail, lightMessages, heavyMessages, callback) => {
 
         // Add the "heavy" message to the list.
         heavyMessages.push(res);
-        console.log(`get message ${heavyMessages.length}`);
+        console.log(`Message ${heavyMessages.length}`);
 
         // Get next message
         getMessage1By1(gmail, lightMessages, heavyMessages, callback);

@@ -17,31 +17,57 @@ exports.decode = (message) => {
     const $ = cheerio.load(body);
 
     let accountName = getAccountName($);
-    console.log(`account name:${accountName}`);
+    console.log(`Account name [${accountName}]`);
  
-    let iconHtml = $('td[class=iconeCategory]');
-    let transactionHtml = iconHtml.next();
+    let transactions = getTransactions($);
+    transactions.forEach((transaction, i) => {
+        console.log(`Transaction  [${i}]`);
+        console.log(`   Type      [${transaction.type}]`);
+        console.log(`   Label     [${transaction.label}]`);
+        console.log(`   Date      [${transaction.date}]`);
+        console.log(`   Category  [${transaction.category}]`);
+        console.log(`   Amount    [${transaction.amount}]`);
+    });
 
-    let transaction = getTransaction(transactionHtml);
+    let accountBalance = getBalance($);
+    console.log(`Balance      [${accountBalance}]`);
 
-    console.log(`transaction type    :${transaction.type}`);
-    console.log(`transaction label   :${transaction.label}`);
-    console.log(`transaction date    :${transaction.date}`);
-    console.log(`transaction category:${transaction.category}`);
-    console.log(`transaction amount  :[${transaction.amount}]`);
-
-    console.log(body);
+//    console.log(body);
 }
 
+/**
+ * Find the account name.
+ */
 getAccountName = (html) => {
-    return html('tr[class=nameDuCompte]').text().trim();
+    return html('tr[class=nameDuCompte]').first().text().trim();
 }
 
+/**
+ * Get the list of transactions.
+ */
+getTransactions = (html) => {
+
+    let transactions = [];
+
+    html('td[class=iconeCategory]').each((i, element) => {
+        let transactionHtml = html(element).next();
+        let transaction = getTransaction(transactionHtml);
+        transactions.push(transaction);
+      });
+
+    return transactions;
+}
+
+/**
+ * Get information of a transaction.
+ */
 getTransaction = (html) => {
     let typeHtml = html.find('span').first();
     let labelHtml = typeHtml.nextAll('strong');
     let dateCategoryHtml = labelHtml.nextAll('span');
-    let amountHtml = html.next();
+    let amountHtml = html.next().first();
+
+    let test = amountHtml.html();
 
     let type = typeHtml.text().trim();
     let label = labelHtml.text().trim();
@@ -58,4 +84,11 @@ getTransaction = (html) => {
         category: category,
         amount: amount
     };
+}
+
+/**
+ * Get account balance.
+ */
+getBalance = (html) => {
+    return html('td[class=meteo]').first().next().next().text().trim();
 }

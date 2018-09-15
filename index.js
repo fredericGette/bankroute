@@ -16,7 +16,11 @@ function listMessages(auth) {
   const query = 'from:(assistance@linxo.com) subject:notification';
 
   callbackDecode = (messages) => {
-    decoder.decode(messages[4]);
+    messages.forEach((message, index) => {
+      console.log(`------------------------------------------------------`);
+      console.log(`Message [${index}]`);
+      decoder.decode(message);      
+    });
   }
 
   messagesService.getMessages(gmail, query, callbackDecode);
