@@ -16,7 +16,7 @@ function listMessages(auth) {
   const query = 'from:(assistance@linxo.com) subject:notification';
 
   callbackDecode = (messages) => {
-    decoder.decode(messages[3]);
+    decoder.decode(messages[4]);
   }
 
   messagesService.getMessages(gmail, query, callbackDecode);
