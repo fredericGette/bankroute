@@ -33,6 +33,10 @@ exports.decode = (message) => {
     console.log(`Balance      [${accountBalance}]`);
 
 //    console.log(body);
+    return {
+        accountName: accountName,
+        transactions: transactions
+    }
 }
 
 /**
