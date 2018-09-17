@@ -18,14 +18,14 @@ function listMessages(auth) {
   const sheets = google.sheets({version: 'v4', auth});
 
   callbackDecode = (messages) => {
-    let decodedData = [];
+    let decodedMessages = [];
     messages.forEach((message, index) => {
       console.log(`------------------------------------------------------`);
       console.log(`Message [${index}]`);
-      decodedData.push(decoder.decode(message));
+      decodedMessages.push(decoder.decode(message));
     });
 
-    store.addTransactions(sheets, decodedData);
+    store.addTransactions(sheets, decodedMessages);
   }
 
   messagesService.getMessages(gmail, query, callbackDecode);

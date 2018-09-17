@@ -1,53 +1,71 @@
 const { google } = require('googleapis');
+const SPREADSHEET_ID = '1h2EcgcjoNZN_F0lbg4zpTYQnE4xRtM26LP52JdS79hM';
 
 /**
-* Prints the names and majors of students in a sample spreadsheet:
-* @see https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
-* @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
-*/
-exports.listMajors = (auth) => {
-    const sheets = google.sheets({ version: 'v4', auth });
-    sheets.spreadsheets.values.get({
-        spreadsheetId: '1h2EcgcjoNZN_F0lbg4zpTYQnE4xRtM26LP52JdS79hM',
-        range: 'transactions!A1:E2',
-    }, (err, res) => {
-        if (err) return console.log('The API returned an error: ' + err);
-        const rows = res.data.values;
-        if (rows.length) {
-            console.log('Name, Major:');
-            // Print columns A and E, which correspond to indices 0 and 4.
-            rows.map((row) => {
-                console.log(`${row[0]}, ${row[4]}`);
+ * Add information from the messages to the spreadsheet.
+ * Information are added only when they don't alredy exist in the spreadsheet.
+ * 
+ * @param {goole.sheets} sheets 
+ * @param {*} messages 
+ */
+exports.addTransactions = (sheets, messages) => {
+
+    addNewMessages = (newMessages) => {
+        let rows = [];
+        newMessages.forEach(message => {
+            message.transactions.forEach(transaction => {
+                let row = [message.id, transaction.date, message.accountName, transaction.type, transaction.label, transaction.category, transaction.amount];
+                rows.push(row)
             });
-        } else {
-            console.log('No data found.');
-        }
-    });
+        });
+    
+        sheets.spreadsheets.values.append({
+            spreadsheetId: SPREADSHEET_ID,
+            range: 'transactions',
+            valueInputOption: 'USER_ENTERED',
+            resource: {
+                values: rows
+            },
+        }, (err, result) => {
+            if (err) return console.log(err);
+    
+            console.log(`${result.data.updates.updatedCells} cells appended.`);
+    
+        });    
+    }
+
+    executeNewMessages(sheets, messages,[], addNewMessages);
 }
 
-exports.addTransactions = (sheets, data) => {
+/**
+ * Execute a callback only with new messages.
+ *
+ */
+executeNewMessages = (sheets, msg2check, newMsg, callback) => {
+    let message = msg2check.pop();
 
-    let rows = [];
-    data.forEach(message => {
-        message.transactions.forEach(transaction => {
-            let row = [transaction.date, message.accountName, transaction.type, transaction.label, transaction.category, transaction.amount];
-            rows.push(row)
-        });
-    });
-
-    let resource = {
-        values: rows
-    };
-
-    sheets.spreadsheets.values.append({
-        spreadsheetId: '1h2EcgcjoNZN_F0lbg4zpTYQnE4xRtM26LP52JdS79hM',
-        range: 'transactions',
+    sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: 'lookup!A10',
         valueInputOption: 'USER_ENTERED',
-        resource,
+        includeValuesInResponse: true,
+        resource: {
+            values: [
+                ['=NOT(ISNA(VLOOKUP("'+message.id+'", transactions!A:A, 1, false)))']
+            ]
+        }
     }, (err, result) => {
         if (err) return console.log(err);
+ 
+        let alreadyProcessed = result.data.updatedData.values[0][0];
+        if (alreadyProcessed === 'FALSE') {
+            newMsg.push(message);
+        }
 
-        console.log(`${result.data.updates.updatedCells} cells appended.`);
-
+        if (msg2check.length > 0) {
+            executeNewMessages(sheets, msg2check, newMsg, callback);
+        } else {
+            callback(newMsg);
+        }
     });
 }

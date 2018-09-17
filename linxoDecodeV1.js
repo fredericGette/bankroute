@@ -8,6 +8,19 @@ decode64 = (b64string) => {
 }
 
 /**
+ * Get message's ID.
+ * 
+ * @param {google.gmail.users.message} message
+ */
+getMessageId = (message) => {
+    let headerMessageId = message.data.payload.headers.find(header => {
+        return header.name === 'Message-Id';
+    });
+
+    return headerMessageId.value;
+}
+
+/**
  * Decode a Linxo notification
  * 
  * @param {google.gmail.users.message} message
@@ -33,7 +46,9 @@ exports.decode = (message) => {
     console.log(`Balance      [${accountBalance}]`);
 
 //    console.log(body);
+    let messageId = getMessageId(message);
     return {
+        id: messageId,
         accountName: accountName,
         transactions: transactions
     }
