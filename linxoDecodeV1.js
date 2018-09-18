@@ -1,4 +1,5 @@
 const cheerio = require('cheerio');
+const moment = require('moment');
 
 /**
 * @param {string} b64string base64 string.
@@ -92,9 +93,15 @@ getTransaction = (html) => {
     let label = labelHtml.text().trim();
     let dateCategory = dateCategoryHtml.text().trim();
     let indexOfSeparator = dateCategory.indexOf('-');
-    let date = dateCategory.substring(0,indexOfSeparator).trim();
+    let dateString = dateCategory.substring(0,indexOfSeparator).trim();
     let category = dateCategory.substring(indexOfSeparator+1).trim();
-    let amount = amountHtml.text().trim();
+    let amountString = amountHtml.text().trim();
+
+    // Parse date
+    let date = moment(dateString, 'DD/MM/YYYY');
+
+    // Parse amount
+    let amount = parseAmount(amountString);
 
     return {
         type: type,
@@ -109,5 +116,14 @@ getTransaction = (html) => {
  * Get account balance.
  */
 getBalance = (html) => {
-    return html('td[class=meteo]').first().next().next().text().trim();
+    let balanceString = html('td[class=meteo]').first().next().next().text().trim();
+    return parseAmount(balanceString);
+}
+
+/**
+ * Parse a string that contains an amount in french local and in Euro.
+ */
+parseAmount = (amountString) => {
+    let transformedString = amountString.replace(/\s/g,'').replace(',','.').replace('€','');
+    return Number.parseFloat(transformedString);
 }

@@ -14,7 +14,10 @@ exports.addTransactions = (sheets, messages) => {
         let rows = [];
         newMessages.forEach(message => {
             message.transactions.forEach(transaction => {
-                let row = [message.id, transaction.date, message.accountName, transaction.type, transaction.label, transaction.category, transaction.amount];
+                // format date ISO 8601
+                let date = transaction.date.format('YYYY-MM-DD');
+
+                let row = [message.id, date, message.accountName, transaction.type, transaction.label, transaction.category, transaction.amount];
                 rows.push(row)
             });
         });
