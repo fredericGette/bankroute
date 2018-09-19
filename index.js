@@ -1,7 +1,7 @@
 const {google} = require('googleapis');
 const authorizationService = require('./authorization');
 const messagesService = require('./messages');
-const decoder = require('./linxoDecodeV1');
+const parser = require('./linxoParserV1');
 const store = require('./store');
 
 // Start
@@ -17,17 +17,15 @@ function listMessages(auth) {
   const query = 'from:(assistance@linxo.com) subject:notification';
   const sheets = google.sheets({version: 'v4', auth});
 
-  callbackDecode = (messages) => {
-    let decodedMessages = [];
-    messages.forEach((message, index) => {
-      console.log(`------------------------------------------------------`);
-      console.log(`Message [${index}]`);
-      decodedMessages.push(decoder.decode(message));
+  messagesService.getMessages(gmail, query
+    , (messages) => {
+      let parsedMessages = [];
+      messages.forEach((message, index) => {
+        console.log(`------------------------------------------------------`);
+        console.log(`Message [${index}]`);
+        parsedMessages.push(parser.parse(message));
+      });
+
+      store.addTransactions(sheets, parsedMessages);
     });
-
-    store.addTransactions(sheets, decodedMessages);
-  }
-
-  messagesService.getMessages(gmail, query, callbackDecode);
-  
 };

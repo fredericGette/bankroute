@@ -10,42 +10,46 @@ const SPREADSHEET_ID = '1h2EcgcjoNZN_F0lbg4zpTYQnE4xRtM26LP52JdS79hM';
  */
 exports.addTransactions = (sheets, messages) => {
 
-    addNewMessages = (newMessages) => {
-        let rows = [];
-        newMessages.forEach(message => {
-            message.transactions.forEach(transaction => {
-                // format date ISO 8601
-                let date = transaction.date.format('YYYY-MM-DD');
-
-                let row = [message.id, date, message.accountName, transaction.type, transaction.label, transaction.category, transaction.amount];
-                rows.push(row)
+    filterNewMessages(sheets, messages,[]
+        , (newMessages) => {
+            let rows = [];
+            newMessages.forEach(message => {
+                message.accounts.forEach(account => {
+                    account.transactions.forEach(transaction => {
+                        // format date ISO 8601
+                        let transactionDate = transaction.date.format('YYYY-MM-DD');
+    
+                        let row = [message.id, transactionDate, account.name, transaction.type, transaction.label, transaction.category, transaction.amount];
+                        rows.push(row)
+                    });    
+                    let balanceDate = message.date.format('YYYY-MM-DD');
+                    let row = [message.id, balanceDate, account.name, 'Balance', '', '', account.balance];
+                    rows.push(row)
+                });
             });
+        
+            sheets.spreadsheets.values.append({
+                spreadsheetId: SPREADSHEET_ID,
+                range: 'transactions',
+                valueInputOption: 'USER_ENTERED',
+                resource: {
+                    values: rows
+                },
+            }, (err, result) => {
+                if (err) return console.log(err);
+        
+                console.log(`${result.data.updates.updatedCells} cells appended.`);
+        
+            });    
         });
-    
-        sheets.spreadsheets.values.append({
-            spreadsheetId: SPREADSHEET_ID,
-            range: 'transactions',
-            valueInputOption: 'USER_ENTERED',
-            resource: {
-                values: rows
-            },
-        }, (err, result) => {
-            if (err) return console.log(err);
-    
-            console.log(`${result.data.updates.updatedCells} cells appended.`);
-    
-        });    
-    }
-
-    executeNewMessages(sheets, messages,[], addNewMessages);
 }
 
 /**
  * Execute a callback only with new messages.
  *
  */
-executeNewMessages = (sheets, msg2check, newMsg, callback) => {
-    let message = msg2check.pop();
+filterNewMessages = (sheets, inputMessages, outputMessages, callback) => {
+    let message = inputMessages.pop();
 
     sheets.spreadsheets.values.update({
         spreadsheetId: SPREADSHEET_ID,
@@ -60,15 +64,17 @@ executeNewMessages = (sheets, msg2check, newMsg, callback) => {
     }, (err, result) => {
         if (err) return console.log(err);
  
+        console.log(`Check message [${inputMessages.length+1}]`);
+
         let alreadyProcessed = result.data.updatedData.values[0][0];
         if (alreadyProcessed === 'FALSE') {
-            newMsg.push(message);
+            outputMessages.push(message);
         }
 
-        if (msg2check.length > 0) {
-            executeNewMessages(sheets, msg2check, newMsg, callback);
+        if (inputMessages.length > 0) {
+            filterNewMessages(sheets, inputMessages, outputMessages, callback);
         } else {
-            callback(newMsg);
+            callback(outputMessages);
         }
     });
 }

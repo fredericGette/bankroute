@@ -2,11 +2,10 @@
 
 exports.getMessages = (gmail, query, callback) => {
 
-  callbackGetHeavyMessages = (lightMessages) => {
-    getMessage1By1(gmail, lightMessages, [], callback);
-  }
-
-  getPageOfMessages(gmail, query, [], callbackGetHeavyMessages);
+  getPageOfMessages(gmail, query, []
+    , (lightMessages) => {
+      getMessage1By1(gmail, lightMessages, [], callback);
+    });
 }
 
 /**
@@ -56,7 +55,7 @@ getMessage1By1 = (gmail, lightMessages, heavyMessages, callback) => {
 
         // Add the "heavy" message to the list.
         heavyMessages.push(res);
-        console.log(`Message ${heavyMessages.length}`);
+        console.log(`Fetch message [${heavyMessages.length-1}]`);
 
         // Get next message
         getMessage1By1(gmail, lightMessages, heavyMessages, callback);

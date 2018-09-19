@@ -22,44 +22,62 @@ getMessageId = (message) => {
 }
 
 /**
+ * Get message's date.
+ * 
+ * @param {google.gmail.users.message} message
+ */
+getMessageDate = (message) => {
+    let headerMessageDate = message.data.payload.headers.find(header => {
+        return header.name === 'Date';
+    });
+
+    return moment(headerMessageDate.value);
+}
+
+/**
  * Decode a Linxo notification
  * 
  * @param {google.gmail.users.message} message
  */
-exports.decode = (message) => {
+exports.parse = (message) => {
     const body = decode64(message.data.payload.body.data)
-    const $ = cheerio.load(body);
+    const html = cheerio.load(body);
 
-    let accountName = getAccountName($);
-    console.log(`Account name [${accountName}]`);
- 
-    let transactions = getTransactions($);
-    transactions.forEach((transaction, i) => {
-        console.log(`Transaction  [${i}]`);
-        console.log(`   Type      [${transaction.type}]`);
-        console.log(`   Label     [${transaction.label}]`);
-        console.log(`   Date      [${transaction.date}]`);
-        console.log(`   Category  [${transaction.category}]`);
-        console.log(`   Amount    [${transaction.amount}]`);
+    let parsedMessage = {};
+    parsedMessage.id =  getMessageId(message);
+    parsedMessage.date = getMessageDate(message);
+
+    // Iterates over the accounts contained in the message.
+    parsedMessage.accounts = [];
+    html('tr[class=notifications]').each((i,element) => {
+        let account = {};
+        account.name = getAccountName(html(element));
+        console.log(`  Account [${i}]`);
+        console.log(`    Name    [${account.name}]`);
+        account.balance = getBalance(html(element));
+        console.log(`    Balance [${account.balance}]`);
+
+        account.transactions = getTransactions(html(element));
+        account.transactions.forEach((transaction, i) => {
+            console.log(`    Transaction  [${i}]`);
+            console.log(`       Type      [${transaction.type}]`);
+            console.log(`       Label     [${transaction.label}]`);
+            console.log(`       Date      [${transaction.date}]`);
+            console.log(`       Category  [${transaction.category}]`);
+            console.log(`       Amount    [${transaction.amount}]`);
+        });
+
+        parsedMessage.accounts.push(account);
     });
 
-    let accountBalance = getBalance($);
-    console.log(`Balance      [${accountBalance}]`);
-
-//    console.log(body);
-    let messageId = getMessageId(message);
-    return {
-        id: messageId,
-        accountName: accountName,
-        transactions: transactions
-    }
+    return parsedMessage;
 }
 
 /**
  * Find the account name.
  */
 getAccountName = (html) => {
-    return html('tr[class=nameDuCompte]').first().text().trim();
+    return html.find('tr[class=nameDuCompte]').first().text().trim();
 }
 
 /**
@@ -69,8 +87,8 @@ getTransactions = (html) => {
 
     let transactions = [];
 
-    html('td[class=iconeCategory]').each((i, element) => {
-        let transactionHtml = html(element).next();
+    html.find('td[class=iconeCategory]').each((i, element) => {
+        let transactionHtml = html.find(element).next();
         let transaction = getTransaction(transactionHtml);
         transactions.push(transaction);
       });
@@ -86,8 +104,6 @@ getTransaction = (html) => {
     let labelHtml = typeHtml.nextAll('strong');
     let dateCategoryHtml = labelHtml.nextAll('span');
     let amountHtml = html.next().first();
-
-    let test = amountHtml.html();
 
     let type = typeHtml.text().trim();
     let label = labelHtml.text().trim();
@@ -116,7 +132,7 @@ getTransaction = (html) => {
  * Get account balance.
  */
 getBalance = (html) => {
-    let balanceString = html('td[class=meteo]').first().next().next().text().trim();
+    let balanceString = html.find('strong:contains("Solde")').parent().parent().next().text().trim();
     return parseAmount(balanceString);
 }
 
