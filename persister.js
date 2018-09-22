@@ -19,7 +19,7 @@ exports.addTransactions = (sheets, messages) => {
                         // format date ISO 8601
                         let transactionDate = transaction.date.format('YYYY-MM-DD');
     
-                        let row = [message.id, transactionDate, account.name, transaction.type, transaction.label, transaction.category, transaction.amount];
+                        let row = [message.id, transactionDate, account.name, transaction.type, transaction.label, transaction.category, transaction.amount, transaction.category2];
                         rows.push(row)
                     });    
                     let balanceDate = message.date.format('YYYY-MM-DD');

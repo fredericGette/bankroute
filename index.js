@@ -2,7 +2,8 @@ const {google} = require('googleapis');
 const authorizationService = require('./authorization');
 const messagesService = require('./messages');
 const parser = require('./linxoParserV1');
-const store = require('./store');
+const persister = require('./persister');
+const categorizer = require('./categorizer');
 
 // Start
 authorizationService.loadCredentials(listMessages);
@@ -26,6 +27,8 @@ function listMessages(auth) {
         parsedMessages.push(parser.parse(message));
       });
 
-      store.addTransactions(sheets, parsedMessages);
+      categorizer.categorize(parsedMessages);
+
+      persister.addTransactions(sheets, parsedMessages);
     });
 };
