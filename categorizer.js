@@ -29,7 +29,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^EDF CLIENTS PARTICULIERS$/, 'Electricité');
     setFromLabel(transaction, /^AVANSSUR$/,                 'Ass. voiture');
     setFromLabel(transaction, /^DAC INTERMARCHE$/,          'Essence');
-    setFromLabel(transaction, /^STAT INTERMARCHE$/,          'Essence');
+    setFromLabel(transaction, /^STAT INTERMARCHE$/,         'Essence');
     setFromLabel(transaction, /^BOUTIQUE SOSH$/,            'Téléphone');
     setFromLabel(transaction, /^BOUYGUES TELECOM$/,         'Téléphone');
     setFromLabel(transaction, /^SFR FIXE ADSL$/,            'Internet');
