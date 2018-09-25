@@ -19,6 +19,9 @@ exports.categorize = (messages) => {
  */
 addCategory2 = (transaction) => {
 
+    // Default
+    setFromCategory(transaction, /^.*$/,                    transaction.category);
+
     setFromCategory(transaction, /^Chèques$/,               'Chq '+transaction.label.substring(7));
     setFromCategory(transaction, /^Retraits d'espèces$/,    'Retr. argent');
     setFromCategory(transaction, /^Virements internes$/,    'Vir. Crédit Mut.');
@@ -26,6 +29,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^EDF CLIENTS PARTICULIERS$/, 'Electricité');
     setFromLabel(transaction, /^AVANSSUR$/,                 'Ass. voiture');
     setFromLabel(transaction, /^DAC INTERMARCHE$/,          'Essence');
+    setFromLabel(transaction, /^STAT INTERMARCHE$/,          'Essence');
     setFromLabel(transaction, /^BOUTIQUE SOSH$/,            'Téléphone');
     setFromLabel(transaction, /^BOUYGUES TELECOM$/,         'Téléphone');
     setFromLabel(transaction, /^SFR FIXE ADSL$/,            'Internet');
