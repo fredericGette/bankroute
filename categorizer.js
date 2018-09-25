@@ -20,7 +20,7 @@ exports.categorize = (messages) => {
 addCategory2 = (transaction) => {
 
     // Default
-    setFromCategory(transaction, /^.*$/,                    transaction.category);
+    setFromCategory(transaction, /^.*$/,                    transaction.label);
 
     setFromCategory(transaction, /^Chèques$/,               'Chq '+transaction.label.substring(7));
     setFromCategory(transaction, /^Retraits d'espèces$/,    'Retr. argent');
@@ -43,7 +43,10 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^AMZN MKTP FR$/,             'Amazon');
     setFromLabel(transaction, /^ZALANDO.*$/,                'Zalando');
     setFromLabel(transaction, /^LIDL.*$/,                   'Lidl');
+    setFromLabel(transaction, /^INTERMARCHE$/,              'Intermarché');
+    setFromLabel(transaction, /^BRICOMARCHE$/,              'Bricomarché');
     setFromLabel(transaction, /^YR PAYLINE$/,               'Yves Rocher');
+    setFromLabel(transaction, /^AB'SOLU$/,                  'Ab\'solu coif.');
     setFromLabel(transaction, /^CUISINE ADDICT$/,           'Cuisine Addict');
     setFromLabel(transaction, /^CERF DELLIER$/,             'Cerf Dellier');
     setFromLabel(transaction, /^FRANCOISE SAGET$/,          'Françoise Saget');
