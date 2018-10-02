@@ -47,7 +47,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^INTERMARCHE$/,              'Intermarché');
     setFromLabel(transaction, /^BRICOMARCHE$/,              'Bricomarché');
     setFromLabel(transaction, /^YR PAYLINE$/,               'Yves Rocher');
-    setFromLabel(transaction, /^AB'SOLU$/,                  'Ab\'solu coif.');
+    setFromLabel(transaction, /^AB'SOLU$/,                  'Coiffeur');
     setFromLabel(transaction, /^CUISINE ADDICT$/,           'Cuisine Addict');
     setFromLabel(transaction, /^CERF DELLIER$/,             'Cerf Dellier');
     setFromLabel(transaction, /^FRANCOISE SAGET$/,          'Françoise Saget');
