@@ -33,6 +33,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^DAC INTERMARCHE$/,          'Essence');
     setFromLabel(transaction, /^STAT INTERMARCHE$/,         'Essence');
     setFromLabel(transaction, /^SNCF INTERNET$/,            'Train');
+    setFromLabel(transaction, /^.* TRAINS.*$/,              'Train');
     setFromLabel(transaction, /^BOUTIQUE SOSH$/,            'Téléphone');
     setFromLabel(transaction, /^BOUYGUES TELECOM$/,         'Téléphone');
     setFromLabel(transaction, /^SFR FIXE ADSL$/,            'Internet');
@@ -53,6 +54,8 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^YR PAYLINE$/,               'Yves Rocher');
     setFromLabel(transaction, /^AB'SOLU$/,                  'Coiffeur');
     setFromLabel(transaction, /^DR VINCENT.*$/,             'Dentiste');
+    setFromLabel(transaction, /^.*FILHET-ALLARD.*$/,        'Mutuelle');
+    setFromLabel(transaction, /^.*C\.P\.A\.M.*$/,           'Securité Soc.');
     setFromLabel(transaction, /^CUISINE ADDICT$/,           'Cuisine Addict');
     setFromLabel(transaction, /^CERF DELLIER$/,             'Cerf Dellier');
     setFromLabel(transaction, /^FRANCOISE SAGET$/,          'Françoise Saget');
