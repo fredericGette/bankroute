@@ -46,6 +46,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^AMAZON\.FR$/,               'Amazon');
     setFromLabel(transaction, /^AMZN MKTP FR$/,             'Amazon');
     setFromLabel(transaction, /^ZALANDO.*$/,                'Zalando');
+    setFromLabel(transaction, /^.*BOUCHERIE.*$/,            'Boucherie');
     setFromLabel(transaction, /^VAL ET LOMONT$/,            'Fromagerie');
     setFromLabel(transaction, /^LIDL.*$/,                   'Lidl');
     setFromLabel(transaction, /^COLRUYT.*$/,                'Colruyt');
