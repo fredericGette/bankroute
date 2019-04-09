@@ -29,6 +29,7 @@ addCategory2 = (transaction) => {
 
     setFromLabel(transaction, /^.*FINANCES PUBLIQUES$/,     'Impôts');
     setFromLabel(transaction, /^EDF CLIENTS PARTICULIERS$/, 'Electricité');
+    setFromLabel(transaction, /^.*ALLIANZ.*$/,              'Ass. Maison');
     setFromLabel(transaction, /^AVANSSUR$/,                 'Voiture');
     setFromLabel(transaction, /^GARAGE DU LION$/,           'Voiture');
     setFromLabel(transaction, /^DAC INTERMARCHE$/,          'Voiture');
@@ -39,6 +40,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^RELAIS DU DOUBS$/,          'Voiture');
     setFromLabel(transaction, /^LA RESIDENCE$/,             'Voiture');
     setFromLabel(transaction, /^APRR$/,                     'Voiture');
+    setFromLabel(transaction, /^ESSFLO.*$/,                 'Voiture');
     setFromLabel(transaction, /^SNCF INTERNET$/,            'Train');
     setFromLabel(transaction, /^.* TRAINS.*$/,              'Train');
     setFromLabel(transaction, /^BOUTIQUE SOSH$/,            'Télécom');
@@ -56,7 +58,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^AMAZON\.FR$/,               'Achats');
     setFromLabel(transaction, /^AMZN MKTP FR$/,             'Achats');
     setFromLabel(transaction, /^LDLC COM$/,                 'Achats');
-    setFromLabel(transaction, /^ZALANDO.*$/,                'Achats');
+    setFromLabel(transaction, /^.*ZALANDO.*$/,              'Achats');
     setFromLabel(transaction, /^.*BOUCHERIE.*$/,            'Alimentaire');
     setFromLabel(transaction, /^VAL ET LOMONT$/,            'Alimentaire');
     setFromLabel(transaction, /^LIDL.*$/,                   'Alimentaire');
