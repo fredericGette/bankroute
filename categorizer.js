@@ -80,6 +80,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^3B SOCHAUX$/,               'Restaurant');
     setFromLabel(transaction, /^.*MUTAVIE.*$/,              'Epargne');
     setFromLabel(transaction, /^.*FREDERIC GETTE.*$/,       'Epargne');
+    setFromLabel(transaction, /^.*GETTE EPARGNE.*$/,        'Epargne');
 }
 
 /**
