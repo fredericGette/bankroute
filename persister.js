@@ -123,7 +123,8 @@ getAndStoreSheetData = (sheets) => {
         c.connect({
             host: 'perso-ftp.orange.fr',
             user: 'fredericgette@orange.fr',
-            password: 'Orange25'
+            password: 'Orange25',
+            secure: true
         });
     });
 }
