@@ -100,10 +100,12 @@ getAndStoreSheetData = (sheets) => {
 
         let deltaLast30days = result.data.valueRanges[0].values[0][0];
         let currentBalance = result.data.valueRanges[1].values[0][0];
+        let currentIsoUtcTime = new Date().toISOString();
 
         let data = {
             currentBalance: currentBalance,
-            deltaLast30days: deltaLast30days
+            deltaLast30days: deltaLast30days,
+            currentIsoUtcTime: currentIsoUtcTime
         }
         console.log(`
             Current balance:    ${currentBalance}

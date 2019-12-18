@@ -30,6 +30,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^.*FINANCES PUBLIQUES$/,     'Impôts');
     setFromLabel(transaction, /^EDF CLIENTS PARTICULIERS$/, 'Electricité');
     setFromLabel(transaction, /^.*ALLIANZ.*$/,              'Ass. Maison');
+    setFromLabel(transaction, /^DAC BAILLY$/,               'Voiture');
     setFromLabel(transaction, /^AVANSSUR$/,                 'Voiture');
     setFromLabel(transaction, /^GARAGE DU LION$/,           'Voiture');
     setFromLabel(transaction, /^DAC INTERMARCHE$/,          'Voiture');
@@ -41,6 +42,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^LA RESIDENCE$/,             'Voiture');
     setFromLabel(transaction, /^APRR$/,                     'Voiture');
     setFromLabel(transaction, /^ESSFLO.*$/,                 'Voiture');
+    setFromLabel(transaction, /^APRR PISTE$/,               'Voiture');
     setFromLabel(transaction, /^SNCF INTERNET$/,            'Train');
     setFromLabel(transaction, /^.* TRAINS.*$/,              'Train');
     setFromLabel(transaction, /^BOUTIQUE SOSH$/,            'Télécom');
@@ -68,6 +70,7 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^BRICOMARCHE$/,              'Achats');
     setFromLabel(transaction, /^YR PAYLINE$/,               'Achats');
     setFromLabel(transaction, /^AB'SOLU$/,                  'Coiffeur');
+    setFromLabel(transaction, /^SALON ANNE B$/,             'Coiffeur');
     setFromLabel(transaction, /^DR VINCENT.*$/,             'Santé');
     setFromLabel(transaction, /^.*FILHET-ALLARD.*$/,        'Santé');
     setFromLabel(transaction, /^.*C\.P\.A\.M.*$/,           'Santé');
@@ -78,9 +81,12 @@ addCategory2 = (transaction) => {
     setFromLabel(transaction, /^.*HOTEL.*$/,                'Hotel');
     setFromLabel(transaction, /^.*BENTINCK.*$/,             'Hotel');
     setFromLabel(transaction, /^3B SOCHAUX$/,               'Restaurant');
+    setFromLabel(transaction, /^LUNCHR$/,                   'Restaurant');
+    setFromLabel(transaction, /^SARL GAL$/,                 'Restaurant');
     setFromLabel(transaction, /^.*MUTAVIE.*$/,              'Epargne');
     setFromLabel(transaction, /^.*FREDERIC GETTE.*$/,       'Epargne');
     setFromLabel(transaction, /^.*GETTE EPARGNE.*$/,        'Epargne');
+    setFromLabel(transaction, /^GENERALI VIE SA.*$/,        'Epargne');
 }
 
 /**
