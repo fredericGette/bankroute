@@ -11,6 +11,12 @@ const categorizer = require('./categorizer');
 
 const app = express();
 
+// Cloud Shell
+// cd bankroute
+// git pull
+// gcloud app deploy
+
+
 app.get('/cron', (req, res) => {
   authorizationService.loadCredentials(listMessages);
   res.status(200).send('Hello, world!').end();

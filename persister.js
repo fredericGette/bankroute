@@ -92,7 +92,7 @@ filterNewMessages = (sheets, inputMessages, outputMessages, callback) => {
 getAndStoreSheetData = (sheets) => {
     sheets.spreadsheets.values.batchGet({
         spreadsheetId: SPREADSHEET_ID,
-        ranges: ['inouts!R2', 'balance!O4'],
+        ranges: ['inouts!R2', 'balance!O4', 'balance!O7'],
         majorDimension: 'ROWS',
         valueRenderOption: 'UNFORMATTED_VALUE'
     }, (err, result) => {
@@ -100,16 +100,19 @@ getAndStoreSheetData = (sheets) => {
 
         let deltaLast30days = result.data.valueRanges[0].values[0][0];
         let currentBalance = result.data.valueRanges[1].values[0][0];
+        let timeBalance = result.data.valueRanges[2].values[0][0];
         let currentIsoUtcTime = new Date().toISOString();
 
         let data = {
             currentBalance: currentBalance,
             deltaLast30days: deltaLast30days,
+            timeBalance: timeBalance,
             currentIsoUtcTime: currentIsoUtcTime
         }
         console.log(`
             Current balance:    ${currentBalance}
             Delta last 30 days: ${deltaLast30days}
+            Time balance:       ${timeBalance}
         `);
 
         var c = new FtpClient();
