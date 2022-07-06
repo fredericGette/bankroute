@@ -4,6 +4,6 @@
     "dependencies": {
         "cheerio": "^1.0.0-rc.2",
         "googleapis": "^27.0.0",
-        "moment": "^2.22.2"
+        "moment": "^2.29.4"
     }
 }
